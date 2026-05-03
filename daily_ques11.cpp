@@ -1,57 +1,43 @@
-// 788 - rotated digits 
+// 796 rotate string 
 
-// An integer x is a good if after rotating each digit individually by 180 degrees, we get a valid number that is different from x. Each digit must be rotated - we cannot choose to leave it alone.
+// Given two strings s and goal, return true if and only if s can become goal after some number of shifts on s.
 
-// A number is valid if each digit remains a digit after rotation. For example:
+// A shift on s consists of moving the leftmost character of s to the rightmost position.
 
-// 0, 1, and 8 rotate to themselves,
-// 2 and 5 rotate to each other (in this case they are rotated in a different direction, in other words, 2 or 5 gets mirrored),
-// 6 and 9 rotate to each other, and the rest of the numbers do not rotate to any other number and become invalid.
-// Given an integer n, return the number of good integers in the range [1, n].
+// For example, if s = "abcde", then it will be "bcdea" after one shift.
 
 #include <iostream>
 #include <string>
-#include <vector>
 
 using namespace std;
 
 class Solution {
 public:
-    int rotatedDigits(int n) {
-        int count = 0;
-        
-        for (int i = 1; i <= n; i++) {
-            if (isGood(i)) {
-                count++;
-            }
+    bool rotateString(string s, string goal) {
+        if (s.length() != goal.length()) {
+            return false;
         }
-        
-        return count;
-    }
 
-private:
-    bool isGood(int num) {
-        bool hasGameChanger = false;
-        string s = to_string(num);
-        
-        for (char c : s) {
-            if (c == '3' || c == '4' || c == '7') {
-                return false; // Invalid digit found
-            }
-            if (c == '2' || c == '5' || c == '6' || c == '9') {
-                hasGameChanger = true; // Change no on rotation
-            }
+        string doubled = s + s;
+        if (doubled.find(goal) != string::npos) {
+            return true;
         }
-        
-        return hasGameChanger;
+
+        return false;
     }
 };
 
 int main() {
     Solution sol;
-    int n = 10;
     
-    cout << "Total Good Numbers up to " << n << ": " << sol.rotatedDigits(n) << endl;
-    
+    string s = "abcde";
+    string goal = "cdeab";
+
+    if (sol.rotateString(s, goal)) {
+        cout << "Result: True (String can be rotated)" << endl;
+    } else {
+        cout << "Result: False" << endl;
+    }
+
     return 0;
 }
