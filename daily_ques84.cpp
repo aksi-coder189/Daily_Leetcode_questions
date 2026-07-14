@@ -1,4 +1,4 @@
-class Solution {
+class Solution{
 public:
     static const int MOD = 1e9 + 7;
 
