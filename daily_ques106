@@ -1,0 +1,45 @@
+class Solution {
+public:
+    vector<int> remainingMethods(int n, int k, vector<vector<int>>& invocations) {
+        vector<vector<int>> adj(n);
+        for (const auto& edge : invocations) {
+            adj[edge[0]].push_back(edge[1]);
+        }
+
+        vector<bool> is_suspicious(n, false);
+        vector<int> q = {k};
+        is_suspicious[k] = true;
+        
+        int head = 0;
+        while (head < q.size()) {
+            int u = q[head++];
+            for (int v : adj[u]) {
+                if (!is_suspicious[v]) {
+                    is_suspicious[v] = true;
+                    q.push_back(v);
+                }
+            }
+        }
+
+        for (const auto& edge : invocations) {
+            int u = edge[0];
+            int v = edge[1];
+            if (!is_suspicious[u] && is_suspicious[v]) {
+                vector<int> all_methods(n);
+                for (int i = 0; i < n; ++i) {
+                    all_methods[i] = i;
+                }
+                return all_methods;
+            }
+        }
+
+        vector<int> result;
+        for (int i = 0; i < n; ++i) {
+            if (!is_suspicious[i]) {
+                result.push_back(i);
+            }
+        }
+
+        return result;
+    }
+};
